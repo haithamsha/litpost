@@ -10,7 +10,6 @@ const listPostHandler = (req, res) => {
     res.send({ posts: datastore_1.db.listPosts() });
 };
 exports.listPostHandler = listPostHandler;
-;
 const createPostHandler = (req, res) => {
     if (!req.body.title || !req.body.url || !req.body.userId)
         return res.sendStatus(400);
