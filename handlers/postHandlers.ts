@@ -6,16 +6,18 @@ import { CreatePostRequest, CreatePostResponse, ListPostsRequest, ListPostsRespo
 
 
 
-export const listPostHandler: ExpressHandler<ListPostsRequest, ListPostsResponse> = (req, res) => {
-    res.send({posts: db.listPosts()});
+export const listPostHandler: ExpressHandler<ListPostsRequest, ListPostsResponse> = async (req, res) => {
+    res.send({posts: await db.listPosts()});
 };
 
 
 
-export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResponse> = (req, res) => {
+export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResponse> = async (req, res) => {
     if(!req.body.title || !req.body.url || !req.body.userId) 
     return res.sendStatus(400);
-    
+    // TODO get user id from session
+    // TODO validate title and url 
+    // validate url is new otherwise add +1 to existing post
     const post: Post = {
         id: crypto.randomUUID(),
         postedAt: Date.now(),
@@ -24,7 +26,7 @@ export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResp
         userId: req.body.userId
     };
 
-    db.createPost(post);
+    await db.createPost(post);
     console.log(db.listPosts());
     res.sendStatus(200);
 }
