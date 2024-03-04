@@ -25,9 +25,6 @@ const datastore_1 = require("./datastore");
         next();
     };
     app.use(requestMiddleWare);
-    app.get('/', (req, res) => {
-        res.send('hi!!!1234');
-    });
     app.get('/v1/posts', (0, express_async_handler_1.default)(postHandlers_1.listPostHandler));
     app.post('/v1/posts', (0, express_async_handler_1.default)(postHandlers_1.createPostHandler));
     const errorHandler = (err, req, res, next) => {
@@ -36,6 +33,6 @@ const datastore_1 = require("./datastore");
     };
     app.use(errorHandler);
     app.listen(3000, () => {
-        console.log('server running at 30000');
+        console.log('server running at 3000');
     });
-}));
+}))();

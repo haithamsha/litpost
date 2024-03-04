@@ -17,9 +17,7 @@ import { initDb } from './datastore';
 
     app.use(requestMiddleWare);
 
-    app.get('/', (req, res) =>{
-        res.send('hi!!!1234');
-    });
+    
 
     app.get('/v1/posts', asyncHandler(listPostHandler));
     app.post('/v1/posts', asyncHandler(createPostHandler));
@@ -34,6 +32,6 @@ import { initDb } from './datastore';
     app.use(errorHandler);
 
     app.listen(3000, () =>  {
-        console.log('server running at 30000')
+        console.log('server running at 3000')
     });
-})
+})();

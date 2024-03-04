@@ -20,11 +20,13 @@ class SqlDataStore {
     openDb() {
         return __awaiter(this, void 0, void 0, function* () {
             // open database
-            const db = yield (0, sqlite_1.open)({
+            this.db = yield (0, sqlite_1.open)({
                 filename: path_1.default.join(__dirname, 'codesquare.sqlite'),
                 driver: sqlite3_1.default.Database
             });
-            yield db.migrate({
+            //enforce forien key for sqlite
+            this.db.run("PRAGMA foreign_keys = ON;");
+            yield this.db.migrate({
                 migrationsPath: path_1.default.join(__dirname, "migrations")
             });
             return this;
@@ -43,10 +45,12 @@ class SqlDataStore {
         throw new Error("Method not implemented.");
     }
     listPosts() {
-        throw new Error("Method not implemented.");
+        return this.db.all("SELECT * FROM Post");
     }
     createPost(post) {
-        throw new Error("Method not implemented.");
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.db.run("INSERT INTO POST(id,title,url,postedAt, userId) VALUES(?,?,?,?,?)", post.id, post.title, post.url, post.postedAt, post.userId);
+        });
     }
     getPost(id) {
         throw new Error("Method not implemented.");

@@ -1,0 +1,19 @@
+CREATE TABLE user(
+    id VARCHAR PRIMARY KEY,
+    firstName VARCHAR NO NULL,
+    lastName VARCHAR NOT NULL,
+    userName VARCHAR UNIQUE NOT NULL, 
+    email VARCHAR UNIQUE NOT NULL,
+    password VARCHAR NOT NULL
+);
+
+CREATE TABLE POST(
+    id VARCHAR PRIMARY KEY,
+    title VARCHAR NOT NULL,
+    url VARCHAR NOT NULL,
+    userId VARCHAR NOT NULL,
+    postedAt INTEGER NOT NULL,
+    FOREIGN KEY (userId) REFERENCES user (id)
+);
+
+
