@@ -7,52 +7,58 @@ export class InMemoryDataStore implements DataStore {
     private comments: Comment[] = [];
     private likes: Like[] = [];
 
-    createComment(comment: Comment): void {
-        this.comments.push(comment);
+    createComment(comment: Comment): Promise<void> {
+         this.comments.push(comment);
+         return Promise.resolve();
     }
 
-    listComment(postId: string): Comment[] {
-        return this.comments;
+    listComment(postId: string): Promise<Comment[]> {
+        return Promise.resolve(this.comments);
     }
 
-    deleteComment(id: string): void {
+    deleteComment(id: string): Promise<void> {
         const index = this.comments.findIndex(c=>c.id === id);
-        if(index === -1) return;
+        if(index === -1) return Promise.resolve();
         this.comments.slice(index);
+        return Promise.resolve();
     }
 
-    createLike(like: Like): void {
+    createLike(like: Like): Promise<void> {
         this.likes.push(like);
+        return Promise.resolve();
     }
 
-    listPosts(): Post[] {
-        return this.posts;
+    listPosts(): Promise<Post[]> {
+        return Promise.resolve(this.posts);
     }
 
-    createPost(post: Post): void {
+    createPost(post: Post): Promise<void> {
         this.posts.push(post);
+        return Promise.resolve();
     }
 
-    getPost(id: string): Post | undefined {
-        return this.posts.find(p=>p.id === id);
+    getPost(id: string): Promise<Post | undefined> {
+        return Promise.resolve(this.posts.find(p=>p.id === id));
     }
 
-    deletePost(id: string): void {
+    deletePost(id: string): Promise<void> {
         const index = this.posts.findIndex(p=>p.id === id);
-        if(index == -1) return;
+        if(index == -1) return Promise.resolve();
         this.posts.slice(index);
+        return Promise.resolve();
     }
 
-    createUser(user: User): void {
+    createUser(user: User): Promise<void> {
         this.users.push(user);
+        return Promise.resolve();
     }
 
-    getUserByEmail(email: string): User | undefined {
-        return this.users.find(u=> u.email === email);
+    getUserByEmail(email: string): Promise<User | undefined> {
+        return Promise.resolve(this.users.find(u=> u.email === email));
     }
     
-    getUserByUserName(userName: string): User | undefined {
-        return this.users.find(u=> u.userName === userName);
+    getUserByUserName(userName: string): Promise<User | undefined> {
+        return Promise.resolve(this.users.find(u=> u.userName === userName));
     }
 
 }

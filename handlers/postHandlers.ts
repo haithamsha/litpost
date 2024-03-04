@@ -1,13 +1,22 @@
 import { RequestHandler, response } from "express";
 import { db } from "../datastore";
-import { Post } from "../types";
+import { ExpressHandler, Post } from "../types";
 import crypto from 'crypto';
 
-export const listPostHandler: RequestHandler = (req, res) => {
-    res.send({posts: db.listPosts()});
-}
 
-export const createPostHandler: RequestHandler = (req, res) => {
+
+export const listPostHandler: ExpressHandler<{}, {}> = (req, res) => {
+    res.send({posts: db.listPosts()});
+};
+
+type CreatePostRequest = Pick<Post, 'title' | 'url' | 'userId'>;
+
+interface CreatePostResponse{};
+
+export const createPostHandler: ExpressHandler<CreatePostRequest, CreatePostResponse> = (req, res) => {
+    if(!req.body.title || !req.body.url || !req.body.userId) 
+    return res.sendStatus(400);
+    
     const post: Post = {
         id: crypto.randomUUID(),
         postedAt: Date.now(),
@@ -15,6 +24,8 @@ export const createPostHandler: RequestHandler = (req, res) => {
         url: req.body.url,
         userId: req.body.userId
     };
+
     db.createPost(post);
+    console.log(db.listPosts());
     res.sendStatus(200);
 }

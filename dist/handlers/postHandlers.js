@@ -10,7 +10,10 @@ const listPostHandler = (req, res) => {
     res.send({ posts: datastore_1.db.listPosts() });
 };
 exports.listPostHandler = listPostHandler;
+;
 const createPostHandler = (req, res) => {
+    if (!req.body.title || !req.body.url || !req.body.userId)
+        return res.sendStatus(400);
     const post = {
         id: crypto_1.default.randomUUID(),
         postedAt: Date.now(),
@@ -19,6 +22,7 @@ const createPostHandler = (req, res) => {
         userId: req.body.userId
     };
     datastore_1.db.createPost(post);
+    console.log(datastore_1.db.listPosts());
     res.sendStatus(200);
 };
 exports.createPostHandler = createPostHandler;
