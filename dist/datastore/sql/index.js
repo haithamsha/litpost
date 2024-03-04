@@ -59,13 +59,15 @@ class SqlDataStore {
         throw new Error("Method not implemented.");
     }
     createUser(user) {
-        throw new Error("Method not implemented.");
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.db.run("INSERT INTO USER(id,firstName, lastName, email, userName, password) values(?,?,?,?,?,?)", user.id, user.firstName, user.lastName, user.email, user.userName, user.password);
+        });
     }
     getUserByEmail(email) {
-        throw new Error("Method not implemented.");
+        return this.db.get("select * from User where email= ?", email);
     }
     getUserByUserName(userName) {
-        throw new Error("Method not implemented.");
+        return this.db.get("select * from User where userName= ?", userName);
     }
 }
 exports.SqlDataStore = SqlDataStore;

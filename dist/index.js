@@ -16,6 +16,7 @@ const express_1 = __importDefault(require("express"));
 const postHandlers_1 = require("./handlers/postHandlers");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const datastore_1 = require("./datastore");
+const userHandler_1 = require("./handlers/userHandler");
 (() => __awaiter(void 0, void 0, void 0, function* () {
     yield (0, datastore_1.initDb)();
     const app = (0, express_1.default)();
@@ -27,6 +28,8 @@ const datastore_1 = require("./datastore");
     app.use(requestMiddleWare);
     app.get('/v1/posts', (0, express_async_handler_1.default)(postHandlers_1.listPostHandler));
     app.post('/v1/posts', (0, express_async_handler_1.default)(postHandlers_1.createPostHandler));
+    app.post('/v1/signup', (0, express_async_handler_1.default)(userHandler_1.signUpHandler));
+    app.post('/v1/signin', (0, express_async_handler_1.default)(userHandler_1.signInHandler));
     const errorHandler = (err, req, res, next) => {
         console.error('Uncaught exception:', err);
         return res.status(500).send('Opps, an unexpected error occured, please try again later.');
