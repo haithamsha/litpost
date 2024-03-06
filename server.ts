@@ -19,6 +19,10 @@ import { authMiddleware } from './middleware/authMiddleware';
 
     app.use(loggerMiddleWare);
     
+    app.get("/healthz", (req, res) => {
+        res.send({status: "✌️"});
+    })
+
     app.post('/v1/signup', asyncHandler(signUpHandler));
     app.post('/v1/signin', asyncHandler(signInHandler));
 
@@ -29,7 +33,7 @@ import { authMiddleware } from './middleware/authMiddleware';
 
     app.use(errorHandler);
 
-    app.listen(3000, () =>  {
-        console.log('server running at 3000')
+    app.listen(process.env.PORT || 3000, () =>  {
+        console.log(`server running at ${process.env.PORT || 3000}`)
     });
 })();
