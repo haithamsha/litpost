@@ -11,30 +11,37 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signUpHandler = exports.signInHandler = void 0;
 const datastore_1 = require("../datastore");
+const auth_1 = require("../auth");
 const signInHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { login, password } = req.body;
     if (!login || !password)
-        return res.sendStatus(400);
+        return res.sendStatus(400).send({ error: "all fields are required" });
+    // const passwordHash = hashPassword(password);
     const existing = (yield datastore_1.db.getUserByEmail(login)) || (yield datastore_1.db.getUserByUserName(login));
     if (!existing || existing.password !== password)
-        return res.sendStatus(403);
+        return res.sendStatus(403).send({ error: "User not exists" });
+    const jwt = (0, auth_1.signJWT)({ userId: existing.id });
     return res.status(200).send({
-        email: existing.email,
-        firstName: existing.firstName,
-        lastName: existing.lastName,
-        id: existing.id,
-        userName: existing.userName
+        user: { email: existing.email,
+            firstName: existing.firstName,
+            lastName: existing.lastName,
+            id: existing.id,
+            userName: existing.userName
+        },
+        jwt
     });
 });
 exports.signInHandler = signInHandler;
 const signUpHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, firstName, lastName, userName, password } = req.body;
     if (!email || !firstName || !lastName || !userName || !password) {
-        return res.sendStatus(400).send("one of user data not inserted!");
+        return res.status(400).send({ error: "one of user data not inserted!" });
     }
     const existing = (yield datastore_1.db.getUserByEmail(email)) || (yield datastore_1.db.getUserByUserName(userName));
     if (existing)
-        return res.sendStatus(403).send("User already exists");
+        return res.status(403).send({ error: "User already exists" });
+    // encrypt password
+    //const passwordHash = hashPassword(password);
     const user = {
         id: crypto.randomUUID(),
         email,
@@ -44,6 +51,10 @@ const signUpHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         password
     };
     yield datastore_1.db.createUser(user);
-    return res.sendStatus(200).send("User Saved");
+    const jwt = (0, auth_1.signJWT)({ userId: user.id });
+    return res.status(200).send({ jwt });
 });
 exports.signUpHandler = signUpHandler;
+// function hashPassword(password: string): string {
+//     return crypto.pbkdf2Sync(password, process.env.PASSWORD_SALT!, 42, 64, 'sha512').toString('hex');    
+// }

@@ -45,7 +45,9 @@ class SqlDataStore {
         throw new Error("Method not implemented.");
     }
     listPosts() {
-        return this.db.all("SELECT * FROM Post");
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.db.all("SELECT * FROM Post");
+        });
     }
     createPost(post) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -64,10 +66,19 @@ class SqlDataStore {
         });
     }
     getUserByEmail(email) {
-        return this.db.get("select * from User where email= ?", email);
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.db.get("select * from User where email= ?", email);
+        });
     }
     getUserByUserName(userName) {
-        return this.db.get("select * from User where userName= ?", userName);
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.db.get("select * from User where userName= ?", userName);
+        });
+    }
+    getUserById(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.db.get("select * from User where id= ?", id);
+        });
     }
 }
 exports.SqlDataStore = SqlDataStore;

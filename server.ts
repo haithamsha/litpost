@@ -5,8 +5,13 @@ import { initDb } from './datastore';
 import { signInHandler, signUpHandler } from './handlers/authHandler';
 import { loggerMiddleWare } from './middleware/loggerMiddleware';
 import { errorHandler } from './middleware/errorMiddleware';
+import dotenv from 'dotenv';
+import { authMiddleware } from './middleware/authMiddleware';
 
 (async () => {
+
+    dotenv.config();
+
     await initDb();
     const app = express();
 
@@ -14,10 +19,13 @@ import { errorHandler } from './middleware/errorMiddleware';
 
     app.use(loggerMiddleWare);
     
-    app.get('/v1/posts', asyncHandler(listPostHandler));
-    app.post('/v1/posts', asyncHandler(createPostHandler));
     app.post('/v1/signup', asyncHandler(signUpHandler));
     app.post('/v1/signin', asyncHandler(signInHandler));
+
+    app.use(authMiddleware);
+
+    app.get('/v1/posts', asyncHandler(listPostHandler));
+    app.post('/v1/posts', asyncHandler(createPostHandler));
 
     app.use(errorHandler);
 

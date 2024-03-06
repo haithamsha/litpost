@@ -5,6 +5,7 @@ import sqlite3 from "sqlite3";
 import path from 'path';
 
 export class SqlDataStore implements DataStore{
+    
     private db!: Database<sqlite3.Database, sqlite3.Statement>;
 
     public async openDb() {
@@ -36,8 +37,8 @@ export class SqlDataStore implements DataStore{
         throw new Error("Method not implemented.");
     }
 
-    listPosts(): Promise<Post[]> {
-        return this.db.all<Post[]>("SELECT * FROM Post");
+    async listPosts(): Promise<Post[]> {
+        return await this.db.all<Post[]>("SELECT * FROM Post");
     }
     
     async createPost(post: Post): Promise<void> {
@@ -59,11 +60,14 @@ export class SqlDataStore implements DataStore{
         await this.db.run("INSERT INTO USER(id,firstName, lastName, email, userName, password) values(?,?,?,?,?,?)",
         user.id, user.firstName, user.lastName, user.email, user.userName, user.password)
     }
-    getUserByEmail(email: string): Promise<User | undefined> {
-        return this.db.get<User>("select * from User where email= ?", email);
+    async getUserByEmail(email: string): Promise<User | undefined> {
+        return await this.db.get<User>("select * from User where email= ?", email);
     }
-    getUserByUserName(userName: string): Promise<User | undefined> {
-        return this.db.get<User>("select * from User where userName= ?", userName);
+    async getUserByUserName(userName: string): Promise<User | undefined> {
+        return await this.db.get<User>("select * from User where userName= ?", userName);
+    }
+    async getUserById(id: string): Promise<User | undefined> {
+        return await this.db.get<User>("select * from User where id= ?", id);
     }
 
 }

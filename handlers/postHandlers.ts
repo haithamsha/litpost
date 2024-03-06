@@ -6,7 +6,8 @@ import { CreatePostRequest, CreatePostResponse, ListPostsRequest, ListPostsRespo
 
 
 
-export const listPostHandler: ExpressHandler<ListPostsRequest, ListPostsResponse> = async (req, res) => {
+export const listPostHandler: ExpressHandler<ListPostsRequest, ListPostsResponse> 
+= async (req, res) => {
     res.send({posts: await db.listPosts()});
 };
 

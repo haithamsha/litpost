@@ -8,6 +8,9 @@ class InMemoryDataStore {
         this.comments = [];
         this.likes = [];
     }
+    getUserById(id) {
+        throw new Error("Method not implemented.");
+    }
     createComment(comment) {
         this.comments.push(comment);
         return Promise.resolve();
