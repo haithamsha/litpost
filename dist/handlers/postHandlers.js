@@ -20,7 +20,7 @@ const listPostHandler = (req, res) => __awaiter(void 0, void 0, void 0, function
 });
 exports.listPostHandler = listPostHandler;
 const createPostHandler = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!req.body.title || !req.body.url || !req.body.userId)
+    if (!req.body.title || !req.body.url)
         return res.sendStatus(400);
     // TODO get user id from session
     // TODO validate title and url 
@@ -30,7 +30,7 @@ const createPostHandler = (req, res) => __awaiter(void 0, void 0, void 0, functi
         postedAt: Date.now(),
         title: req.body.title,
         url: req.body.url,
-        userId: req.body.userId
+        userId: res.locals.userId
     };
     yield datastore_1.db.createPost(post);
     console.log(datastore_1.db.listPosts());

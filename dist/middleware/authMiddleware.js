@@ -22,6 +22,7 @@ const authMiddleware = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         const user = yield datastore_1.db.getUserById(payload.userId);
         if (!user)
             throw 'not found';
+        res.locals.userId = user.id;
         next();
     }
     catch (_b) {

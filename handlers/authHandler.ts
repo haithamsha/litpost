@@ -25,9 +25,6 @@ export const signInHandler: ExpressHandler<SignInRequest, SignInResponse> = asyn
         },
         jwt
     });
-    
-
-
 }
 
 export const signUpHandler: ExpressHandler<SignUpRequest, SignUpResponse> = async (req, res) => {
@@ -51,7 +48,7 @@ export const signUpHandler: ExpressHandler<SignUpRequest, SignUpResponse> = asyn
         userName,
         password
     };
-
+    
     await db.createUser(user);
     const jwt = signJWT({userId: user.id});
     return res.status(200).send({jwt});
