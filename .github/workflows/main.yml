@@ -11,23 +11,10 @@ jobs:
   deploy:
     runs-on: self-hosted
     steps:
-      - name: checkout repo+branch
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       - name: setup node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: install and build server
         run: |
           cd server
           npm install
-      - name: restart server
-        env:
-          DB_PATH: ${{ secrets.DB_PATH }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          PASSWORD_SALT: ${{ secrets.PASSWORD_SALT }}
-          ENV: ${{ secrets.ENV }}
-          PORT: ${{ secrets.PORT }}
-        run: |
-          cd server
-          npm run start:prod
+          PORT=80 JWT_SECRET=123456 PASSWORD_SALT=mysecretsalt ENV=production npm run start:prod
+
