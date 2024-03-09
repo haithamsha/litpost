@@ -15,8 +15,8 @@ jobs:
       - name: setup node
         uses: actions/setup-node@v3
         with:
-          node-version: 16
-      - name: provision database
+          node-version: 20
+      - name: provision databases
         run: |
           mkdir -p "$(dirname ${{ secrets.DB_PATH }})"
           touch ${{ secrets.DB_PATH }}
