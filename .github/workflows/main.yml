@@ -1,0 +1,36 @@
+name: self-serve deployer
+
+on:
+  push:
+    branches: [deploy-prod]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: checkout repo+branch
+        uses: actions/checkout@v3
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: provision database
+        run: |
+          mkdir -p "$(dirname ${{ secrets.DB_PATH }})"
+          touch ${{ secrets.DB_PATH }}
+      - name: install and build server
+        run: |
+          cd server
+          npm install
+      - name: restart server
+        env:
+          DB_PATH: ${{ secrets.DB_PATH }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          PASSWORD_SALT: ${{ secrets.PASSWORD_SALT }}
+          ENV: ${{ secrets.ENV }}
+          PORT: ${{ secrets.PORT }}
+        run: |
+          cd server
+          npm run start:prod
