@@ -13,8 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: setup node
+      env:
+        JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        PASSWORD_SALT: ${{ secrets.PASSWORD_SALT }}
         run: |
           cd server
           npm install
-          PORT=80 JWT_SECRET=123456 PASSWORD_SALT=mysecretsalt ENV=production npm run start:prod
+          PORT=80 JWT_SECRET=${{secrets.JWT_SECRET}} PASSWORD_SALT=${{secrets.PASSWORD_SALT}} ENV=production npm run start:prod
 

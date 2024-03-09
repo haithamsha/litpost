@@ -34,6 +34,8 @@ import { authMiddleware } from './middleware/authMiddleware';
     app.use(errorHandler);
 
     app.listen(process.env.PORT || 3000, () =>  {
-        console.log(`server running at ${process.env.PORT || 3000}`)
+        console.log(`server running at ${process.env.PORT || 3000}`);
+        console.log(`jwt secret ${process.env.JWT_SECRET} password sault ${process.env.PASSWORD_SALT}`)
+        
     });
 })();
